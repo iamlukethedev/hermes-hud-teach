@@ -21,10 +21,13 @@ def _on_session_end(**_kwargs) -> None:
 
 
 def register(ctx) -> None:
-    """Register the teach_screen tool and a session-end cleanup hook."""
+    """Register teach_screen and session-end cleanup on every host.
+
+    Availability is gated by check_fn=macos_only so catalog validation still
+    sees the declared tool on Linux CI. The handler refuses non-macOS use.
+    """
     if platform.system() != "Darwin":
-        logger.info("hud-teach: skipping registration on %s (macOS only)", platform.system())
-        return
+        logger.info("hud-teach: registering on %s; teach_screen is unavailable until macOS", platform.system())
 
     ctx.register_tool(
         name="teach_screen",
