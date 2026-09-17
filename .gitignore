@@ -9,6 +9,7 @@ venv/
 .mypy_cache/
 *.png
 *.jpg
+!docs/*.jpg
 .env
 .env.*
 !*.example
