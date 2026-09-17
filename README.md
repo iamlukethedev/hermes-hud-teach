@@ -1,7 +1,10 @@
 # HUD Teach
 
-Numbered, click-through how-to marks on the live Mac app underneath Hermes —
-Photoshop, a DAW, Settings — instead of narrating menu paths.
+Numbered, click-through marks on **any live Mac window** underneath Hermes —
+a chess board, a browser game, Photoshop, a DAW, Settings — instead of
+narrating menu paths. It is not Photoshop-only.
+
+![Chess Nxc3 hint: red circles and arrow on the board, yellow move arrows, click-through so the user still plays](docs/chess-hint.jpg)
 
 This is a **standalone Hermes plugin**, not a core patch. The overlay is a small
 Tk process the plugin owns. Hermes Desktop does not need to merge any Electron
@@ -28,7 +31,7 @@ In **System Settings → Privacy & Security**:
 ## What the agent does
 
 ```
-teach_screen action=capture  target=Photoshop
+teach_screen action=capture  target=Chess
 teach_screen action=draw     frame_width=… frame_height=… bounds=… shapes=[…]
 ```
 

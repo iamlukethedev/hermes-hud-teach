@@ -140,7 +140,8 @@ def handle_teach_screen(
 SCHEMA = {
     "name": "teach_screen",
     "description": (
-        "Teach on the live Mac app behind Hermes: list windows, screenshot one, "
+        "Teach on any live Mac window behind Hermes (chess, games, Photoshop, "
+        "Settings): list windows, screenshot one, "
         "then draw numbered click-through marks on it. Use action=capture first "
         "(returns the image plus frame_width/frame_height/bounds), then action=draw "
         "with those numbers and shapes that include step 1–12. Leave the mouse to "
@@ -157,7 +158,7 @@ SCHEMA = {
             },
             "target": {
                 "type": "string",
-                "description": "Optional app or window-title substring (e.g. Photoshop).",
+                "description": "Optional app or window-title substring (e.g. Chess, Chrome, Photoshop).",
             },
             "shapes": {
                 "type": "array",
