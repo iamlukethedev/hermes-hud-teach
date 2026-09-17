@@ -1,0 +1,24 @@
+name: hud-teach
+version: 0.1.0
+description: Numbered how-to marks on the live Mac app underneath Hermes HUD.
+manifest_version: 2
+api_version: 1
+author: Luke The Dev (@iamlukethedev)
+license: MIT
+homepage: https://github.com/iamlukethedev/hermes-hud-teach
+kind: standalone
+requires_hermes: ">=0.20.0"
+platforms:
+  - macos
+tags:
+  - desktop
+  - hud
+  - teach
+provides_tools:
+  - teach_screen
+provides_hooks:
+  - on_session_end
+hooks:
+  - on_session_end
+requires_env: []
+python_dependencies: []
