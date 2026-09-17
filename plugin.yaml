@@ -1,8 +1,6 @@
 name: hud-teach
 version: 0.1.0
 description: Numbered how-to marks on the live Mac app underneath Hermes HUD.
-manifest_version: 2
-api_version: 1
 author: Luke The Dev (@iamlukethedev)
 license: MIT
 homepage: https://github.com/iamlukethedev/hermes-hud-teach
