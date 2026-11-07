@@ -2,35 +2,59 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import socket
+import tempfile
 from pathlib import Path
 from typing import Any, Optional
 
+PLUGIN_NAME = "hud-teach"
 SOCKET_NAME = "overlay.sock"
 PID_NAME = "overlay.pid"
+HOME_ENV = "HUD_TEACH_HOME"
+# macOS caps AF_UNIX paths at 104 bytes including the terminator.
+MAX_SOCKET_PATH = 100
 
 
 def state_dir() -> Path:
-    """Profile-aware state directory; HUD_TEACH_HOME wins for tests."""
-    env = os.environ.get("HUD_TEACH_HOME") or os.environ.get("HERMES_HOME")
+    """Profile-aware runtime directory; HUD_TEACH_HOME wins (the daemon and tests set it)."""
+    env = os.environ.get(HOME_ENV)
     if env:
-        base = Path(env)
+        path = Path(env)
     else:
+        path = None
         try:
-            from hermes_constants import get_hermes_home
+            from plugins.plugin_storage import plugin_data_dir
 
-            base = get_hermes_home()
+            path = Path(plugin_data_dir(PLUGIN_NAME))
         except Exception:
-            base = Path.home() / ".hermes"
-    path = base / "hud-teach"
+            path = None
+        if path is None:
+            base = os.environ.get("HERMES_HOME")
+            if base:
+                root = Path(base)
+            else:
+                try:
+                    from hermes_constants import get_hermes_home
+
+                    root = Path(get_hermes_home())
+                except Exception:
+                    root = Path.home() / ".hermes"
+            path = root / "plugin-data" / PLUGIN_NAME
     path.mkdir(parents=True, exist_ok=True)
     return path
 
 
 def socket_path() -> Path:
-    return state_dir() / SOCKET_NAME
+    """Socket inside the state dir, or a short per-dir temp path when that would be too long."""
+    base = state_dir()
+    path = base / SOCKET_NAME
+    if len(str(path).encode("utf-8")) <= MAX_SOCKET_PATH:
+        return path
+    digest = hashlib.sha1(str(base).encode("utf-8")).hexdigest()[:12]
+    return Path(tempfile.gettempdir()) / f"hud-teach-{digest}.sock"
 
 
 def pid_path() -> Path:
@@ -64,5 +88,5 @@ def send(payload: dict[str, Any], timeout: float = 2.0) -> dict[str, Any]:
 def ping() -> Optional[dict[str, Any]]:
     try:
         return send({"op": "ping"}, timeout=0.4)
-    except OSError:
+    except (OSError, ValueError):
         return None
