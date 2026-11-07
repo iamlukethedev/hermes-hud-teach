@@ -1,6 +1,6 @@
 name: hud-teach
-version: 0.1.3
-description: Numbered click-through marks on any live Mac window — chess, games, Photoshop, Settings.
+version: 0.2.0
+description: Step-by-step lessons on any live Mac window — numbered click-through marks plus an on-screen step card for chess, games, Photoshop, Settings.
 author: Luke The Dev (@iamlukethedev)
 license: MIT
 homepage: https://github.com/iamlukethedev/hermes-hud-teach
@@ -12,11 +12,13 @@ tags:
   - desktop
   - hud
   - teach
+  - tutorial
+  - accessibility
 provides_tools:
   - teach_screen
 provides_hooks:
-  - on_session_end
+  - on_session_finalize
 hooks:
-  - on_session_end
+  - on_session_finalize
 requires_env: []
 python_dependencies: []
