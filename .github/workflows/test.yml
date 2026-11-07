@@ -49,11 +49,12 @@ jobs:
         with:
           path: plugin
       - uses: astral-sh/setup-uv@v6
-      - name: Install Hermes Agent from main
+      - name: Install Hermes Agent from main (locked dependencies)
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/hermes
         run: |
           git clone --depth 1 https://github.com/NousResearch/hermes-agent.git hermes-agent
-          uv venv "$RUNNER_TEMP/hermes" --python 3.14
-          uv pip install --python "$RUNNER_TEMP/hermes/bin/python" -e ./hermes-agent
+          cd hermes-agent && uv sync --frozen --no-dev --python 3.14
       - name: hermes plugins validate
         env:
           HERMES_HOME: ${{ runner.temp }}/hermes-home
